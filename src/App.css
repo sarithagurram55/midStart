@@ -1,0 +1,18 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+    padding: 0;
+}
+.one{
+    margin: 2rem;
+    display: flex !important;
+    
+    /* width: 40%; */
+}
+.two{
+    border-bottom: 2px solid gray;
+    padding-bottom: 20px;
+}
+.three{
+    padding-top: 20px;
+}

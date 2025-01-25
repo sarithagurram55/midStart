@@ -1,0 +1,195 @@
+
+/* import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Container, Box, Paper, Typography, Button } from '@mui/material';
+
+export default function Page() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Safely extract data from location.state
+  const { add, userLocation } = location.state || {};
+
+  if (!add || !userLocation) {
+    return (
+      <Container>
+        <Typography variant="h5" color="error" style={{ marginTop: '20px' }}>
+          Invalid data. Please navigate back and select a hospital.
+        </Typography>
+        <Button variant="contained" color="primary" onClick={() => navigate('/')}>
+          Go Back
+        </Button>
+      </Container>
+    );
+  }
+
+  // Extract hospital coordinates safely
+  const hospitalCoordinates = add.geometry?.coordinates || [null, null];
+  const hospitalLat = hospitalCoordinates[1]; // Hospital Latitude
+  const hospitalLon = hospitalCoordinates[0]; // Hospital Longitude
+
+  const [userAddress, setUserAddress] = useState('Fetching...');
+  const [routeData, setRouteData] = useState(null); // Store route data
+  const [routeLoading, setRouteLoading] = useState(true); // Track route loading state
+  const [error, setError] = useState(null); // Track errors
+
+  // Fetch user's formatted address using reverse geocoding
+  useEffect(() => {
+    const fetchUserAddress = async () => {
+      try {
+        const response = await axios.get(
+          `https://api.geoapify.com/v1/geocode/reverse?lat=${userLocation.lat}&lon=${userLocation.lon}&type=state&lang=en&limit=1&apiKey=6855bfa3579542bc8dc41201233f7e96`
+        );
+        const formattedAddress = response.data?.features?.[0]?.properties?.formatted || 'Unknown Location';
+        setUserAddress(formattedAddress);
+      } catch (err) {
+        console.error('Error fetching user address:', err);
+        setUserAddress('Failed to fetch address');
+      }
+    };
+
+    if (userLocation?.lat && userLocation?.lon) {
+      fetchUserAddress();
+    }
+  }, [userLocation]);
+
+  // Fetch route using Geoapify Routing API
+  useEffect(() => {
+    const fetchRoute = async () => {
+      try {
+        setRouteLoading(true);
+        const response = await axios.get(
+          `https://api.geoapify.com/v1/routing?waypoints=${userLocation.lat},${userLocation.lon}|${hospitalLat},${hospitalLon}&mode=drive&apiKey=6855bfa3579542bc8dc41201233f7e96`
+        );
+        setRouteData(response.data);
+        setError(null); // Clear errors if successful
+      } catch (err) {
+        console.error('Error fetching route:', err);
+        setError('Failed to fetch route');
+      } finally {
+        setRouteLoading(false);
+      }
+    };
+
+    if (userLocation?.lat && userLocation?.lon && hospitalLat && hospitalLon) {
+      fetchRoute();
+    }
+  }, [userLocation, hospitalLat, hospitalLon]);
+
+  return (
+    <Container>
+      <Box display="flex" flexWrap="wrap" gap={2} justifyContent="flex-start">
+        <Paper elevation={3} style={{ margin: '20px', padding: '10px 15px', width: '45%' }}> */
+          {/* Hospital Details */}
+          /* <Typography variant="h5" gutterBottom>
+            {add.properties?.name || 'Unnamed Hospital'}
+          </Typography> */
+
+          {/* User Details */}
+          /* <Typography>User Latitude: {userLocation.lat || 'Unknown'}</Typography>
+          <Typography>User Longitude: {userLocation.lon || 'Unknown'}</Typography>
+          <Typography>User Address: {userAddress}</Typography> */
+
+          {/* Hospital Details */}
+          /* <Typography>Hospital Latitude: {hospitalLat || 'Unknown'}</Typography>
+          <Typography>Hospital Longitude: {hospitalLon || 'Unknown'}</Typography>
+          <Typography>Hospital Address: {add.properties?.formatted || 'Address not available'}</Typography>
+          <Typography>Hospital Website: {add.properties?.datasource?.url || 'Website not available'}</Typography>
+          <Typography>State: {add.properties?.state || 'Unknown'}</Typography>
+          <Typography>City: {add.properties?.city || 'Unknown'}</Typography>
+        </Paper> */
+
+        {/* Route Information */}
+        /* <Paper elevation={3} style={{ margin: '20px', padding: '10px 15px', width: '45%' }}>
+          <Typography variant="h6" gutterBottom>
+            Route Information
+          </Typography>
+          {routeLoading ? (
+            <Typography>Loading route...</Typography>
+          ) : error ? (
+            <Typography color="error">{error}</Typography>
+          ) : (
+            <>
+              <Typography>
+                Distance: {routeData?.features?.[0]?.properties?.distance || 'Unknown'} meters
+              </Typography>
+              <Typography>
+                Duration: {routeData?.features?.[0]?.properties?.time || 'Unknown'} seconds
+              </Typography>
+              <Typography>Directions:</Typography>
+              <Typography>{routeData?.features?.[0]?.properties?.legs?.[0]?.steps.step.instruction.text}</Typography> */
+              {/* <ul>
+                {routeData?.features?.[0]?.properties?.legs?.[0]?.steps.map((step, index) => (
+                  <li key={index}>{step.instruction.text}</li>
+                ))}
+              </ul> */}
+            /* </>
+          )}
+        </Paper>
+      </Box>
+    </Container>
+  );
+} */
+
+
+
+/* // import { Typography } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useLocation } from 'react-router-dom';
+import {Container,Box, Paper, Typography} from '@mui/material';
+
+
+export default function Page(){
+    // [curr, setCurr] = useState({ lat: null, lon: null })
+    const location = useLocation();
+    const { add, userLocation } = location.state; // Retrieve hospital and user location
+    const { lat: hospitalLat, lon: hospitalLon } = add.geometry.coordinates;
+    const [userAddress, setUserAddress] = useState(null);
+
+    useEffect(()=>{
+        const currentLocation = async () =>{
+            try{
+            const response = await axios.get(`https://api.geoapify.com/v1/geocode/reverse?lat=${userLocation.lat}&lon=${userLocation.lon}&type=state&lang=en&limit=5&format=json&apiKey=6855bfa3579542bc8dc41201233f7e96`);
+            console.log('hello')
+            console.log(response.data)
+            setUserAddress(response.data.features[0]?.properties.formatted || 'Unknown Location');
+            // console.log(loc.data.query.lat)
+            // console.log(loc.data.query.lon)
+            // setCurr(loc.data.query)
+            }catch(err){
+                console.log(err);
+            }
+        }
+        currentLocation()
+    },[useLocation])
+
+    return(
+        <div>
+            <Container>
+                <Box  
+                display="flex" 
+                flexWrap="wrap" // Allow wrapping to next row
+                gap={2} // Add gap between items
+                justifyContent="flex-start">
+                    <Paper elevation={3} style={{margin:"20px",padding:'10px 15px',width:'45%'}} >
+                        <Typography variant='h5' className='two'>{add.properties.name}</Typography>
+
+                        <Typography className='three'>User Lattitude : {userLocation.lat}</Typography>
+                        <Typography>User Longitute : {userLocation.lon}</Typography>
+                        <Typography className='two'>User Formatted Address : {add.properties.formatted}</Typography>
+
+                        <Typography className='three'>Hospital Lattitude :{hospitalLat}</Typography>
+                        <Typography>Hospital Longitute : {hospitalLon}</Typography>
+                        <Typography className='two'>Hospital Formatted Address : {add.properties.formatted}</Typography>
+
+                        <Typography className='three'>Hospital Website : {add.properties.datasource.url} </Typography>
+                        <Typography>State : {add.properties.state} </Typography>
+                        <Typography className='two'>City :{add.properties.city}</Typography>
+                    </Paper>
+                </Box>
+            </Container>
+        </div>
+    )
+} */
